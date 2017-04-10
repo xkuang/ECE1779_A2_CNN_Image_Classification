@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Signin</title>
+    <link href="static/materials/bootstrap.min.css" rel="stylesheet" />
+    <link href="static/materials/signin.css" rel="stylesheet" />
+    <style>
+      #inputPassword{
+        margin-bottom:10px;
+      }
+      #btn{
+        height:42px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form class="form-signin" action="{{url_for('signin')}}" method="post">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+        <div class="input-group">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+          <span id="btn" class="input-group-addon"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+        </div>
+        <p style="margin-bottom:0px;color:red;">{{error if error != None}}</p>
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+      
+      <form class="form-signin" action="{{url_for('signup')}}" method="get">
+        <h2 class="form-signin-heading">New here?</h2>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
+      </form>
+
+    </div>
+    
+    <script src="static/materials/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="static/materials/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://use.fontawesome.com/fd9dba5260.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("#btn").mouseup(function(){
+          $("#inputPassword").attr("type","password");
+        });
+        $("#btn").mousedown(function(){
+          $("#inputPassword").attr("type","text");
+        });
+      });
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!--<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">-->
+    <div class="container">
+          <section class="row text-center placeholders">
+            <div class="col-6 col-sm-2 placeholder">
+              {% if image != None %}
+                <div class="text-muted">You have uploaded</div>
+                <div class="text-muted">{{image}}</div>
+                <img src="/static/input/{{image}}" class="img-fluid" alt="Generic placeholder thumbnail" />
+                <form class="container" action="{{url_for('image_upload')}}" enctype="multipart/form-data" method="post">
+                  <button type="submit" class="btn-sm btn-primary">Upload Another Image</button>
+                </form>
+              {% else %}
+                <img src="/static/materials/dashedSpace.png" class="img-fluid" alt="Generic placeholder thumbnail" />
+              {% endif %}
+            </div>
+            <div class="col-6 col-sm-2 placeholder" style="border-left: 1px solid grey;" id="level1">
+              <div class="text-muted">224&times224&times64</div>
+              <img src="/static/materials/1.png" class="img-fluid" alt="Generic placeholder thumbnail" style="height:100%" />
+            </div>
+            <div class="col-6 col-sm-2 placeholder" id="level2">
+              <div class="text-muted">112&times112&times128</div>
+              <img src="/static/materials/2.png" class="img-fluid" alt="Generic placeholder thumbnail" style="height:100%" />
+            </div>
+            <div class="col-6 col-sm-2 placeholder" id="level3">
+              <div class="text-muted">56&times56&times256</div>
+              <img src="/static/materials/3.png" class="img-fluid" alt="Generic placeholder thumbnail" style="height:100%" />
+            </div>
+            <div class="col-6 col-sm-2 placeholder" id="level4">
+              <div class="text-muted">28&times28&times512</div>
+              <img src="/static/materials/4.png" class="img-fluid" alt="Generic placeholder thumbnail" style="height:100%" />
+            </div>
+            <div class="col-6 col-sm-2 placeholder" id="level5">
+              <div class="text-muted">14&times14&times512</div>
+              <img src="/static/materials/5.png" class="img-fluid" alt="Generic placeholder thumbnail" style="height:100%" />
+            </div>
+          </section>
+    </div>
+    
+    <hr class="container">
+    
+    {% if image == None %}
+      <!--File Upload Block Start-->
+      <form class="container" action="{{url_for('image_upload_save')}}" enctype="multipart/form-data" method="post" style="text-align:center;">
+        <div class="fileinput fileinput-new" data-provides="fileinput" style="min-width:250px;">
+            <span class="btn btn-secondary btn-file"><span>Choose file</span><input type="file" name="uploadedfile" /></span>
+            <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+        <button type="reset" class="btn btn-info">Reset</button>
+      </form>
+      <!--File Upload Block End-->
+    {% elif test == 0 %}
+      <form class="container" action="{{url_for('image_test',input=image,needToTest=1)}}" style="text-align:center;">
+        <button type="submit" class="btn-lg btn-success" style="width:50%;font-size:1.5rem;">Test</button>
+      </form>
+    {% elif test == 1 %}
+      <div class="container">
+          <section class="row text-center">
+            <div class="col-6 col-sm-2" id="classification">
+              <h4>Predict</h4>
+              <div style="width:100%;background-color:#35a0fd;">{{result[0][0]}}: {{result[0][1]}}</div>
+              <div style="width:100%;background-color:#68b7fd;">{{result[1][0]}}: {{result[1][1]}}</div>
+              <div style="width:100%;background-color:#9acffe;">{{result[2][0]}}: {{result[2][1]}}</div>
+              <div style="width:100%;background-color:#cde7fe;">{{result[3][0]}}: {{result[3][1]}}</div>
+              <div style="width:100%;background-color:#e6f3ff;">{{result[4][0]}}: {{result[4][1]}}</div>
+            </div>
+            <div class="col-6 col-sm-2" id="filter1">
+            </div>
+            <div class="col-6 col-sm-2" id="filter2">
+            </div>
+            <div class="col-6 col-sm-2" id="filter3">
+            </div>
+            <div class="col-6 col-sm-2" id="filter4">
+            </div>
+            <div class="col-6 col-sm-2" id="filter5">
+            </div>
+          </section>
+      </div>
+      <script>
+          $("#level1").click(function(){
+            $("#level1").css("background-color","lightgoldenrodyellow");
+            $("#level2").css("background-color","transparent");
+            $("#level3").css("background-color","transparent");
+            $("#level4").css("background-color","transparent");
+            $("#level5").css("background-color","transparent");
+            $("#filter1").html("<a href=\"{{url_for('result_view',input=image,output=level1[0])}}\"><img src='/static/output/{{level1[0]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 1</div><div class='text-muted'>Filter: {{level1[0][2:-4]}}</div>");
+            $("#filter2").html("<a href=\"{{url_for('result_view',input=image,output=level1[1])}}\"><img src='/static/output/{{level1[1]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 1</div><div class='text-muted'>Filter: {{level1[1][2:-4]}}</div>");
+            $("#filter3").html("<a href=\"{{url_for('result_view',input=image,output=level1[2])}}\"><img src='/static/output/{{level1[2]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 1</div><div class='text-muted'>Filter: {{level1[2][2:-4]}}</div>");
+            $("#filter4").html("<a href=\"{{url_for('result_view',input=image,output=level1[3])}}\"><img src='/static/output/{{level1[3]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 1</div><div class='text-muted'>Filter: {{level1[3][2:-4]}}</div>");
+            $("#filter5").html("<a href=\"{{url_for('result_view',input=image,output=level1[4])}}\"><img src='/static/output/{{level1[4]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 1</div><div class='text-muted'>Filter: {{level1[4][2:-4]}}</div>");
+            activate();
+          });
+          $("#level2").click(function(){
+            $("#level2").css("background-color","lightgoldenrodyellow");
+            $("#level1").css("background-color","transparent");
+            $("#level3").css("background-color","transparent");
+            $("#level4").css("background-color","transparent");
+            $("#level5").css("background-color","transparent");
+            $("#filter1").html("<a href=\"{{url_for('result_view',input=image,output=level2[0])}}\"><img src='/static/output/{{level2[0]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 2</div><div class='text-muted'>Filter: {{level2[0][2:-4]}}</div>");
+            $("#filter2").html("<a href=\"{{url_for('result_view',input=image,output=level2[1])}}\"><img src='/static/output/{{level2[1]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 2</div><div class='text-muted'>Filter: {{level2[1][2:-4]}}</div>");
+            $("#filter3").html("<a href=\"{{url_for('result_view',input=image,output=level2[2])}}\"><img src='/static/output/{{level2[2]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 2</div><div class='text-muted'>Filter: {{level2[2][2:-4]}}</div>");
+            $("#filter4").html("<a href=\"{{url_for('result_view',input=image,output=level2[3])}}\"><img src='/static/output/{{level2[3]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 2</div><div class='text-muted'>Filter: {{level2[3][2:-4]}}</div>");
+            $("#filter5").html("<a href=\"{{url_for('result_view',input=image,output=level2[4])}}\"><img src='/static/output/{{level2[4]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 2</div><div class='text-muted'>Filter: {{level2[4][2:-4]}}</div>");
+            activate();
+          });
+          $("#level3").click(function(){
+            $("#level3").css("background-color","lightgoldenrodyellow");
+            $("#level1").css("background-color","transparent");
+            $("#level2").css("background-color","transparent");
+            $("#level4").css("background-color","transparent");
+            $("#level5").css("background-color","transparent");
+            $("#filter1").html("<a href=\"{{url_for('result_view',input=image,output=level3[0])}}\"><img src='/static/output/{{level3[0]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 3</div><div class='text-muted'>Filter: {{level3[0][2:-4]}}</div>");
+            $("#filter2").html("<a href=\"{{url_for('result_view',input=image,output=level3[1])}}\"><img src='/static/output/{{level3[1]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 3</div><div class='text-muted'>Filter: {{level3[1][2:-4]}}</div>");
+            $("#filter3").html("<a href=\"{{url_for('result_view',input=image,output=level3[2])}}\"><img src='/static/output/{{level3[2]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 3</div><div class='text-muted'>Filter: {{level3[2][2:-4]}}</div>");
+            $("#filter4").html("<a href=\"{{url_for('result_view',input=image,output=level3[3])}}\"><img src='/static/output/{{level3[3]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 3</div><div class='text-muted'>Filter: {{level3[3][2:-4]}}</div>");
+            $("#filter5").html("<a href=\"{{url_for('result_view',input=image,output=level3[4])}}\"><img src='/static/output/{{level3[4]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 3</div><div class='text-muted'>Filter: {{level3[4][2:-4]}}</div>");
+            activate();
+          });
+          $("#level4").click(function(){
+            $("#level4").css("background-color","lightgoldenrodyellow");
+            $("#level1").css("background-color","transparent");
+            $("#level2").css("background-color","transparent");
+            $("#level3").css("background-color","transparent");
+            $("#level5").css("background-color","transparent");
+            $("#filter1").html("<a href=\"{{url_for('result_view',input=image,output=level4[0])}}\"><img src='/static/output/{{level4[0]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 4</div><div class='text-muted'>Filter: {{level4[0][2:-4]}}</div>");
+            $("#filter2").html("<a href=\"{{url_for('result_view',input=image,output=level4[1])}}\"><img src='/static/output/{{level4[1]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 4</div><div class='text-muted'>Filter: {{level4[1][2:-4]}}</div>");
+            $("#filter3").html("<a href=\"{{url_for('result_view',input=image,output=level4[2])}}\"><img src='/static/output/{{level4[2]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 4</div><div class='text-muted'>Filter: {{level4[2][2:-4]}}</div>");
+            $("#filter4").html("<a href=\"{{url_for('result_view',input=image,output=level4[3])}}\"><img src='/static/output/{{level4[3]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 4</div><div class='text-muted'>Filter: {{level4[3][2:-4]}}</div>");
+            $("#filter5").html("<a href=\"{{url_for('result_view',input=image,output=level4[4])}}\"><img src='/static/output/{{level4[4]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 4</div><div class='text-muted'>Filter: {{level4[4][2:-4]}}</div>");
+            activate();
+          });
+          $("#level5").click(function(){
+            $("#level5").css("background-color","lightgoldenrodyellow");
+            $("#level1").css("background-color","transparent");
+            $("#level2").css("background-color","transparent");
+            $("#level3").css("background-color","transparent");
+            $("#level4").css("background-color","transparent");
+            $("#filter1").html("<a href=\"{{url_for('result_view',input=image,output=level5[0])}}\"><img src='/static/output/{{level5[0]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 5</div><div class='text-muted'>Filter: {{level5[0][2:-4]}}</div>");
+            $("#filter2").html("<a href=\"{{url_for('result_view',input=image,output=level5[1])}}\"><img src='/static/output/{{level5[1]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 5</div><div class='text-muted'>Filter: {{level5[1][2:-4]}}</div>");
+            $("#filter3").html("<a href=\"{{url_for('result_view',input=image,output=level5[2])}}\"><img src='/static/output/{{level5[2]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 5</div><div class='text-muted'>Filter: {{level5[2][2:-4]}}</div>");
+            $("#filter4").html("<a href=\"{{url_for('result_view',input=image,output=level5[3])}}\"><img src='/static/output/{{level5[3]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 5</div><div class='text-muted'>Filter: {{level5[3][2:-4]}}</div>");
+            $("#filter5").html("<a href=\"{{url_for('result_view',input=image,output=level5[4])}}\"><img src='/static/output/{{level5[4]}}' class='img-fluid thumbnail' alt='Generic placeholder thumbnail' style='width:100%' /></a><div class='text-muted'>Level: 5</div><div class='text-muted'>Filter: {{level5[4][2:-4]}}</div>");
+            activate();
+          });
+          function activate(){
+                var x = 10;
+                var y = 20;
+                
+                $(".thumbnail").hover(function(e){
+                    var bigimage = "<div id='bigimage'><img src='" + this.src + "' alt='Big Image' width='640px' height='480px' /></div>";  
+                    $("body").append(bigimage); 
+                    $("#bigimage").css({
+                        "top": "50%",  
+                        "left": "50%",
+                        "position": "absolute",
+                        "margin": "-240px 0 0 -320px"
+                    }).show("fast");
+                },function(e){
+                    $("#bigimage").remove();
+                });
+          }
+      </script>
+    {% endif %}
+
+{% endblock %}

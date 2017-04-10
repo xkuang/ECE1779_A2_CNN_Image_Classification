@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    <div class="container" style="text-align:center;">
+        <img src="/static/output/{{result}}" alt="{{result}}" class="img-fluid" style="width:960px;"/>
+    
+        <br />
+    
+        <form action="{{url_for('image_test',input=image,needToTest=0)}}" method="get">
+            <button type="submit" class="btn-lg btn-primary">Back</button>
+        </form>
+    </div>
+
+{% endblock %}
