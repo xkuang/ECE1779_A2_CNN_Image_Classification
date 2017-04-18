@@ -4,5 +4,4 @@
 2. Enter the virtual environment: "source venv/bin/activate"
 3. Install flask: "pip install flask"
 4. Run the application: "python run.py"
-
-(5. Install any required library: "pip install ***")
+5. Install any required library: "pip install ***"
